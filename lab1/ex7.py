@@ -47,16 +47,16 @@ print(f"b1) {normalize_cols(x)}")
 
 #same input x as before
 
-def normalize_rows(x, m, n):
+def normalize_rows(x):
     #normalize each row element based on the sum of all the elements of that row
     rows_sum = x.sum(axis = 1)
 
     #np.shape(x) -> (3, 4)
     #np.shape(rows_sum) -> (3, )
 
-    return x / rows_sum.reshape((m, 1))
+    return x / rows_sum.reshape((x.shape[0], 1))
 
-print(f"b2) {normalize_rows(x, 3, 4)}")
+print(f"b2) {normalize_rows(x)}")
 
 
 #d
@@ -67,6 +67,19 @@ def setNegativesToZero(x):
     return np.maximum(x, 0) #element-wise maximum between each element of x and 0
 
 print(f"c) {setNegativesToZero(x1)}")
+
+#e
+
+matrix1 = np.array([[1,2,3], [4,5,6], [7,8,9]])
+matrix2 = np.array([[10, 11, 12], [13, 14, 15], [16, 17, 18]])
+
+def sumofProduct(m1, m2):
+    #scalar product
+    p = np.dot(m1, m2)  #m1 @ m2
+    return p.sum()
+
+
+print(f"d) {sumofProduct(matrix1, matrix2)}")
 
 
 
