@@ -30,6 +30,8 @@ def loadIrisDataset(path):
 
 
 
+#Compute Sw, Sb
+
 def computeSwSb(D, L):
     '''
     Params:
@@ -41,12 +43,12 @@ def computeSwSb(D, L):
     - Sb: Between-class scatter matrix
     '''
 
-    #find the number of classes (classes are numerical values) 
-    numClasses = L.max() + 1
+    #find the unique labels for each class
+    uniqueLabels = np.unique(L)
 
     #nc in the formula is computed as the number of samples of class c
     #separate data into classes
-    DC = [D[:, L == label] for label in range(numClasses)]  #DC[0] -> samples of class 0, DC[1] -> samples of class 1 etc...
+    DC = [D[:, L == label] for label in uniqueLabels]  #DC[0] -> samples of class 0, DC[1] -> samples of class 1 etc...
 
     #compute nc for each class
     #each element in DC has a shape which is (4, DC_i.shape[1]) (assuming samples are not equally distributed among all the classes which is true in 99% of cases...)
@@ -58,14 +60,14 @@ def computeSwSb(D, L):
     mu = mu.reshape((mu.shape[0], 1))
 
     #Now compute the mean for each class
-    muC = [DC[label].mean(axis=1) for label in range(numClasses)]
+    muC = [DC[label].mean(axis=1) for label, labelName in enumerate(uniqueLabels)]
     muC = [mc.reshape((mc.shape[0], 1)) for mc in muC]
 
     Sb = 0  #between matrix initialization
     Sw = 0  #within  matrix initialization
 
     #iterate over all the classes to execute the summations to calculate the 2 matrices
-    for label in range(numClasses):
+    for label, labelName in enumerate(uniqueLabels):
 
         #1) FOR SB:
         #add up to the Sb (between) matrix
@@ -94,6 +96,8 @@ def computeSwSb(D, L):
 
     #return both matrices
     return Sb, Sw
+        
+
 
 
 
