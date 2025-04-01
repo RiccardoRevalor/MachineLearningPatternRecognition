@@ -1,10 +1,31 @@
 #MVG MODEL
 
 import numpy as np
-from mean_covariance import vcol, vrow                              #for vcol, vrow 
-from sklearn.metrics import classification_report                   #for generating the classification report of the models
+from mean_covariance import vcol, vrow, compute_mu_C                #for vcol, vrow, compute_mu_C functions
 from scipy.special import logsumexp                                 #for scipy.special.logsumexp
 from logpdf_loglikelihood_GAU import logpdf_GAU_ND                  #for computing the log-likelihood of the Gaussian distribution
+
+
+
+def computeParams_ML(D, labels):
+    #Compute the ML (Maximum Likelihood) parameters of the MVG distribution given the data and the labels
+    """
+    Parameters:
+    - D: the data matrix of shape (numFeatures, numSamples)
+    - labels: the labels of the data, so a list of length numSamples
+
+    Returned Values:
+    - params: the model parameters, so  list of tuples (mu, C) where mu is the mean vector fo class c and C is the covariance matrix of class c
+    """
+
+    params = []
+    numClasses = np.unique(labels).shape[0] #number of classes
+    for label in range(numClasses):
+        #compute MLE estimates of mean and covariance matrix for each class i
+        params.append(compute_mu_C(D[:, labels == label])) 
+
+    return params #params is a list of tuples (mu, C) where mu is the mean vector fo class c and C is the covariance matrix of class c
+
 
 
 
