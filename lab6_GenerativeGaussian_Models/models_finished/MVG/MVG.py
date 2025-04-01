@@ -116,3 +116,14 @@ def computePosteriors(SJoint, useLog=False):
 
     return SPost
    
+
+def classify(SPost):
+    #Classify the samples by taking the class with the highest posterior probability
+    """
+    Parameters:
+    - SPost: the posteriors of shape (numClasses, numSamples) where each row is the posterior of the class given the sample
+
+    Returned Values:
+    - labels: the predicted labels of the samples, so a list of length numSamples
+    """
+    return np.argmax(SPost, axis=0)
