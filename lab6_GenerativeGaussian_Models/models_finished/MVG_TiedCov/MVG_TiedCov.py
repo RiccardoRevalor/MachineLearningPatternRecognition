@@ -78,12 +78,12 @@ def computeParams_ML_TiedCov(D, labels, useLDAForTiedCov=False):
     """
 
     params = []
-    numClasses = np.unique(labels).shape[0] #number of classes
+    classes = np.unique(labels)   #number of classes
 
     if (useLDAForTiedCov):
         #compute the covariance matrix using the LDA method
         Sw = computeSw(D, labels)
-        for label in range(numClasses):
+        for label in classes:
             #compute MLE meanst of each class i
             mu, _ = compute_mu_C(D[:, labels == label])
             params.append((mu, Sw))
@@ -92,20 +92,20 @@ def computeParams_ML_TiedCov(D, labels, useLDAForTiedCov=False):
 
     else:
         CTied = 0                               #initialize the tied covariance matrix
-        muVect = []                        #initialize the mean vectors list
-        for label in range(numClasses):
+        muVect = {}                             #initialize the mean vectors dict
+        for label in classes:
             #compute MLE estimates of mean and covariance matrix for each class i
             D_c = D[:, labels == label]
             Nc = D_c.shape[1]                   #Nc is the number of samples of class c
             mu, C = compute_mu_C(D_c)
-            muVect.append(mu)
+            muVect[label] = mu                #store the mean vector of class c
             CTied += Nc * C
 
         #at the end do: CTied / N
         CTied = CTied / D.shape[1]              #N = D.shape[1] is the number of samples
 
         #put everything in the params list
-        for label in range(numClasses):
+        for label in classes:
             params.append((muVect[label], CTied))
 
         return params
