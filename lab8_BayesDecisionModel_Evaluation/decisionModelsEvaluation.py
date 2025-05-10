@@ -285,7 +285,7 @@ def plotROC_FPRvsTPR(scores, LVAL):
 
 
 # function to plot the Bayes error plots for a given range of log odds ratios and scores -> BINARY CLASSIFICATION ONLY
-def plotBayesErrorPlots(effPriorLogOdds, scores, LVAL):
+def plotBayesErrorPlots(effPriorLogOdds, scores, LVAL, title):
     """
     Plot the Bayes error plots for a given range of log odds ratios and scores.
     Args:
@@ -321,7 +321,7 @@ def plotBayesErrorPlots(effPriorLogOdds, scores, LVAL):
     plt.figure(figsize=(8, 6))
     plt.plot(xAxis, series0_yAxis, marker='o', linestyle='-', markersize=1, label='DCF', color='red')
     plt.plot(xAxis, series1_yAxis, marker='o', linestyle='-', markersize=1, label='min DCF', color='blue')
-    plt.title("Bayes Error Plots: DCF and min DCF vs Effective Prior Log Odds", pad=20, fontsize=14)
+    plt.title(title, pad=20, fontsize=14)
     plt.xlabel("Effective Prior Log Odds")
     plt.ylim([0, 1.1])
     plt.xlim([min(xAxis), max(xAxis)]) #set the x axis limits to the min and max of the x axis which are the effectivePriorLogOdds
