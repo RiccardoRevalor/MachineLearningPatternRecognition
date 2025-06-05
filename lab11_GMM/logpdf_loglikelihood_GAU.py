@@ -76,6 +76,9 @@ def logpdf_GAU_ND_Loop(X, mu, C):
     
     return np.array(result).ravel()
 
+def logpdf_GAU_ND_fast(x, mu, C):
+    P = np.linalg.inv(C)
+    return -0.5*x.shape[0]*np.log(np.pi*2) - 0.5*np.linalg.slogdet(C)[1] - 0.5 * ((x-mu) * (P @ (x-mu))).sum(0)
 
 def logpdf_GAU_ND(X, mu, C):
     #Compute the log of the probability density function of a multivariate Gaussian distribution
